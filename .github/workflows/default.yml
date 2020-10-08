@@ -4,7 +4,26 @@ on:
   push:
 
 jobs:
-  test:
+  provisioning:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
+      - run: |
+          cat<<EOE > .env
+          CLOUDSDK_CORE_PROJECT=YOUR_GCP_PROJECT_ID
+          CURRENT_ENV_NAME=production
+          PROJECT_UNIQUE_ID=YOUR_GCP_PROJECT_UNIZUE_ID
+          EOE
+      - run: |
+          echo "UID=$(id -u)" >> .env
+          echo "GID=$(id -g)" >> .env
+      # - run: |
+      #     echo ${PROVISIONING_GOOGLE_SA_KEY} > config/$(grep -e '^\s*CURRENT_ENV_NAME\s*=' .env | sed -e 's/CURRENT_ENV_NAME=//')/credentials/google-cloud-keyfile.json
+      #   env:
+      #     PROVISIONING_GOOGLE_SA_KEY: ${{ secrets.PROVISIONING_GOOGLE_SA_KEY }}
+      # - run: docker-compose build
+      # - run: docker-compose up
+      # - run: docker-compose run provisioning terraform fmt -check
+      # - run: docker-compose run provisioning terraform plan
+      # - run: docker-compose run provisioning terraform apply -auto-approve
+      #   if: github.ref == 'refs/heads/main'

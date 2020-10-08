@@ -6,12 +6,19 @@ services:
       args:
         UID: ${UID:-0}
         GID: ${GID:-0}
+    command:
+      - bash
+      - -lc
+      - |
+        . /project/scripts/provisioning.init-with-google.sh
     environment:
+      - CURRENT_ENV_NAME
       - CLOUDSDK_CORE_PROJECT
+      - GOOGLE_APPLICATION_CREDENTIALS=/project/config/${CURRENT_ENV_NAME}/credentials/google-cloud-keyfile.json
       - PROJECT_UNIQUE_ID
       - TF_DATA_DIR=/tmp/provisioning
-      - TF_VAR_basename
-      - TF_VAR_gcp_project_id
+      - TF_VAR_gcp_project_id=${CLOUDSDK_CORE_PROJECT}
+      - TF_VAR_project_unique_id=${PROJECT_UNIQUE_ID}
     user: "${UID:-0}:${GID:-0}"
     volumes:
       - provisioning-tmp:/tmp/provisioning

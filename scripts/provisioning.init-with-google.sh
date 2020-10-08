@@ -1,11 +1,6 @@
 #!/usr/bin/zsh
 
-# Todo: args for envs
-declare ENV_NAME_CURRENT="development"
-# Todo: check PROJECT_UNIQUE_ID
-# Todo: check TF_DATA_DIR
-export BUCKET_NAME_FOR_PROVISIONING="${PROJECT_UNIQUE_ID}-${ENV_NAME_CURRENT}-provisioning"
-export GOOGLE_APPLICATION_CREDENTIALS="/project/config/${ENV_NAME_CURRENT}/credentials/google-cloud-keyfile.json"
+readonly BUCKET_NAME_FOR_PROVISIONING="${PROJECT_UNIQUE_ID}-${CURRENT_ENV_NAME}-provisioning"
 
 # Auth gcloud
 gcloud auth activate-service-account --key-file=${GOOGLE_APPLICATION_CREDENTIALS}

@@ -9,8 +9,10 @@ ARG UID=0
 ENV GID=${GID:-0}
 ENV UID=${UID:-0}
 
-ENV ANSIBLE_VERSION=2.9.12
-ENV TERRAFORM_VERSION=0.13.3
+ARG ANSIBLE_VERSION=2.9.12
+ENV ANSIBLE_VERSION=${ANSIBLE_VERSION}
+ARG TERRAFORM_VERSIONS=0.13.4,0.13.3
+ENV TERRAFORM_VERSIONS=${TERRAFORM_VERSIONS}
 
 RUN echo 'apt::install-recommends "false";' > /etc/apt/apt.conf.d/no-install-recommends\
   && apt-get update\
@@ -33,6 +35,11 @@ RUN echo 'apt::install-recommends "false";' > /etc/apt/apt.conf.d/no-install-rec
   && apt-get update\
   && apt-get install --assume-yes docker-ce-cli\
   # 
+  # Install AWS CLI v.2
+  && curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "/tmp/awscliv2.zip"\
+  && unzip /tmp/awscliv2.zip -d /tmp/\
+  && /tmp/aws/install\
+  # 
   # Install Google Cloud SDK
   && curl https://packages.cloud.google.com/apt/doc/apt-key.gpg | apt-key --keyring /usr/share/keyrings/cloud.google.gpg add -\
   && echo "deb [signed-by=/usr/share/keyrings/cloud.google.gpg] https://packages.cloud.google.com/apt cloud-sdk main"\
@@ -40,9 +47,15 @@ RUN echo 'apt::install-recommends "false";' > /etc/apt/apt.conf.d/no-install-rec
   && apt-get update\
   && apt-get install --assume-yes google-cloud-sdk\
   # 
-  # Install Terraform
-  && curl -L -o /tmp/terraform.zip https://releases.hashicorp.com/terraform/${TERRAFORM_VERSION}/terraform_${TERRAFORM_VERSION}_linux_amd64.zip\
-  && unzip -d /usr/local/bin/ /tmp/terraform.zip\
+  # Install tfenv
+  && git clone --depth=1 https://github.com/tfutils/tfenv.git /usr/local/tfenv\
+  && ls -1 /usr/local/tfenv/bin/ | xargs -IB ln -s /usr/local/tfenv/bin/B /usr/local/bin/B\
+  # Install Terraform via tfenv
+  && echo $TERRAFORM_VERSIONS | tr ',' '\n' | xargs -IV tfenv install V\
+  # use the beginning version on the list
+  && tfenv use ${TERRAFORM_VERSIONS%%,*}\
+  # && curl -L -o /tmp/terraform.zip https://releases.hashicorp.com/terraform/${TERRAFORM_VERSION}/terraform_${TERRAFORM_VERSION}_linux_amd64.zip\
+  # && unzip -d /usr/local/bin/ /tmp/terraform.zip\
   #
   # Install Ansible
   && apt-get install --assume-yes python3-pip python3-setuptools\
