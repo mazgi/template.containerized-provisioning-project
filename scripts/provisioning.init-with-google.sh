@@ -5,6 +5,9 @@ readonly BUCKET_NAME_FOR_PROVISIONING="${PROJECT_UNIQUE_ID}-${CURRENT_ENV_NAME}-
 # Auth gcloud
 gcloud auth activate-service-account --key-file=${GOOGLE_APPLICATION_CREDENTIALS}
 gcloud auth configure-docker gcr.io --quiet
+# Eenable Cloud Resource Manager API because that time out in terraform.
+# https://cloud.google.com/resource-manager/reference/rest
+gcloud services enable cloudresourcemanager.googleapis.com
 
 # Create the GCS bucket to save tfstate
 
