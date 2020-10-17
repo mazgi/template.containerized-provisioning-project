@@ -18,6 +18,12 @@ gsutil ls gs://${BUCKET_NAME_FOR_PROVISIONING}/ > /dev/null 2>&1 || {
 gsutil uniformbucketlevelaccess set on gs://${BUCKET_NAME_FOR_PROVISIONING}/
 gsutil versioning set on gs://${BUCKET_NAME_FOR_PROVISIONING}/
 
+# Detect terraform version
+rm -f .terraform-version
+sudo tfenv install min-required
+sudo tfenv use min-required
+terraform version -json | jq -r '.terraform_version' | tee -a /tmp/.terraform-version
+mv /tmp/.terraform-version .
 # Init terraform
 sudo chmod a+rwx ${TF_DATA_DIR}
 terraform init -backend-config="bucket=${BUCKET_NAME_FOR_PROVISIONING}"
