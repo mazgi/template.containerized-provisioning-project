@@ -7,8 +7,8 @@ services:
         UID: ${UID:-0}
         GID: ${GID:-0}
     command:
-      - bash
-      - -lc
+      - zsh
+      - -ic
       - |
         /project/scripts/provisioning.init-with-google.sh
     environment:

@@ -1,11 +1,11 @@
-#!/usr/bin/zsh
+#!/usr/bin/env -S zsh -eu
 
-# see: http://zsh.sourceforge.net/Doc/Release/Parameters.html#Parameters-Set-By-The-Shell
-[[ $_ = $0 ]] && {
+# see: http://zsh.sourceforge.net/Doc/Release/Zsh-Modules.html#index-funcstack
+if [[ ${#funcstack[@]} -ne 0 ]]; then
   echo 'the script is being sourced.'
   echo "please run it is as a subshell such as \"sh $0\""
   return 0
-} 
+fi
 
 if [[ ! -v PROJECT_UNIQUE_ID ]]; then
   echo 'the $PROJECT_UNIQUE_ID variable is not set.'
