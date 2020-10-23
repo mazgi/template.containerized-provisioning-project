@@ -1,7 +1,6 @@
 resource "aws_iam_user" "mail-sender" {
   name = "mail-sender"
   path = "/system/"
-
 }
 
 resource "aws_iam_access_key" "mail-sender" {
