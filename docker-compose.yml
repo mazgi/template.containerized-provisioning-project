@@ -10,7 +10,7 @@ services:
       - bash
       - -lc
       - |
-        . /project/scripts/provisioning.init-with-google.sh
+        /project/scripts/provisioning.init-with-google.sh
     environment:
       - AWS_ACCESS_KEY_ID
       - AWS_ACCOUNT_ID

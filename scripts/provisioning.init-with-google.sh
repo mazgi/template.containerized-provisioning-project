@@ -1,5 +1,18 @@
 #!/usr/bin/zsh
 
+# see: http://zsh.sourceforge.net/Doc/Release/Parameters.html#Parameters-Set-By-The-Shell
+[[ $_ = $0 ]] && {
+  echo 'the script is being sourced.'
+  echo "please run it is as a subshell such as \"sh $0\""
+  return 0
+} 
+
+if [[ ! -v PROJECT_UNIQUE_ID ]]; then
+  echo 'the $PROJECT_UNIQUE_ID variable is not set.'
+  echo 'it was canceled.'
+  exit 0
+fi
+
 readonly BUCKET_NAME_FOR_PROVISIONING="${PROJECT_UNIQUE_ID}-${CURRENT_ENV_NAME}-provisioning"
 
 # Auth gcloud

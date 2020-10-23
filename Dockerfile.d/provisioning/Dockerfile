@@ -23,8 +23,9 @@ RUN echo 'apt::install-recommends "false";' > /etc/apt/apt.conf.d/no-install-rec
   && locale-gen\
   #
   # Install basic packages
-  && apt-get install --assume-yes sudo apt-utils curl dnsutils git jq openssh-client tmux unzip zsh\
+  && apt-get install --assume-yes sudo apt-utils curl dnsutils git jq openssh-client ssh tmux unzip zsh\
   && apt-get install --assume-yes apt-transport-https ca-certificates gnupg gnupg2 rsync software-properties-common\
+  && apt-get install --assume-yes python3-pip python3-setuptools\
   # 
   # Install Docker CLI
   && curl -fsSL https://download.docker.com/linux/debian/gpg | apt-key add -\
@@ -46,6 +47,8 @@ RUN echo 'apt::install-recommends "false";' > /etc/apt/apt.conf.d/no-install-rec
   | tee -a /etc/apt/sources.list.d/google-cloud-sdk.list\
   && apt-get update\
   && apt-get install --assume-yes google-cloud-sdk\
+  # for gsutil signurl
+  && pip3 install pyopenssl\
   # 
   # Install tfenv
   && git clone --depth=1 https://github.com/tfutils/tfenv.git /usr/local/tfenv\
@@ -58,7 +61,6 @@ RUN echo 'apt::install-recommends "false";' > /etc/apt/apt.conf.d/no-install-rec
   # && unzip -d /usr/local/bin/ /tmp/terraform.zip\
   #
   # Install Ansible
-  && apt-get install --assume-yes python3-pip python3-setuptools\
   && pip3 install ansible==${ANSIBLE_VERSION} ansible-lint\
   # 
   # Create a user for development
