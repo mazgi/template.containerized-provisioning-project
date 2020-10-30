@@ -4,25 +4,25 @@
 
 ## How to set up
 
-You need one AWS account and one GCP project which you can fully manage.  
-And you should get credentials after you set up system accounts as below for provisioning.
+You need one AWS account and one GCP project each of you can fully manage.  
+And you need to get credentials after you set up system accounts for provisioning as described below.
 
 ### How to set up your AWS IAM user
 
-You should create an AWS IAM user named `provisioning-admin` that attached follows permissions.
+You should create an AWS IAM user under the name `provisioning-admin` that attached follows permissions.
 
 - `AdministratorAccess`
 
 ### How to set up your GCP service account
 
-You should create a GCP service account named `provisioning-owner` that added follows roles.
+You should create a GCP service account under the name `provisioning-owner` that added follows roles.
 
 - `Project Owner`
 - `Storage Admin`
 
 ### How to set up your local environment
 
-You should create the ".env" file as follows.
+You need create the `.env` file as follows.
 
 ```shellsession
 rm -f .env
@@ -35,7 +35,8 @@ PROJECT_UNIQUE_ID=YOUR_GCP_PROJECT_UNIZUE_ID
 EOE
 ```
 
-Place your credentials as follows.
+Place your credentials into `config/${CURRENT_ENV_NAME}/credentials/` directory.  
+If you using [1Password command-line tool](https://1password.com/downloads/command-line/), you can get credentials as follows from your 1Password vault.
 
 ```shellsession
 eval $(op signin my)
@@ -44,7 +45,7 @@ op get document arn:aws:iam::${AWS_ACCOUNT_ID}:user/provisioning-admin > config/
 op get document provisioning-owner@${CLOUDSDK_CORE_PROJECT}.iam.gserviceaccount.com > config/${CURRENT_ENV_NAME}/credentials/google-cloud-keyfile.json
 ```
 
-You should update the ".env" file as follows.
+You need update the `.env` file as follows.
 
 ```shellsession
 source .env
