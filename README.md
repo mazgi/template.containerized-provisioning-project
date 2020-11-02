@@ -36,7 +36,7 @@ EOE
 ```
 
 Place your credentials into `config/${CURRENT_ENV_NAME}/credentials/` directory.  
-If you using [1Password command-line tool](https://1password.com/downloads/command-line/), you can get credentials as follows from your 1Password vault.
+If you are using [1Password command-line tool](https://1password.com/downloads/command-line/), you can get credentials as follows from your 1Password vault.
 
 ```shellsession
 eval $(op signin my)
