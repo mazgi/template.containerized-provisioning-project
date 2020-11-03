@@ -27,7 +27,7 @@ You need create the `.env` file as follows.
 ```shellsession
 rm -f .env
 test $(uname -s) = 'Linux' && echo "UID=$(id -u)\nGID=$(id -g)" >> .env
-cat<<EOE > .env
+cat<<EOE >> .env
 AWS_ACCOUNT_ID=YOUR_AWS_ACCOUNT_ID
 CLOUDSDK_CORE_PROJECT=YOUR_GCP_PROJECT_ID
 CURRENT_ENV_NAME=production
