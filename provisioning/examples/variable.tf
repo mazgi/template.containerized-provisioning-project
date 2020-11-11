@@ -2,9 +2,7 @@ variable "base_dnsdomain" {
   default = "example.dev"
 }
 
-variable "aws_default_region" {
-  default = "us-east-1"
-}
+variable "aws_default_region" {}
 variable "aws_access_key" {}
 variable "aws_secret_key" {}
 
