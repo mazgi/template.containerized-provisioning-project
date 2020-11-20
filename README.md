@@ -27,6 +27,7 @@ You need create the `.env` file as follows.
 ```shellsession
 rm -f .env
 test $(uname -s) = 'Linux' && echo "UID=$(id -u)\nGID=$(id -g)" >> .env
+echo "DOCKER_GID=$(getent group docker | cut -d : -f 3)" >> .env
 cat<<EOE >> .env
 AWS_ACCOUNT_ID=YOUR_AWS_ACCOUNT_ID
 AWS_DEFAULT_REGION=us-east-1
