@@ -20,7 +20,7 @@ services:
       - CLOUDSDK_CORE_PROJECT
       - GOOGLE_APPLICATION_CREDENTIALS=/project/config/${CURRENT_ENV_NAME}/credentials/google-cloud-keyfile.json
       - PROJECT_UNIQUE_ID
-      - TF_DATA_DIR=/tmp/provisioning
+      - TF_DATA_DIR=/tmp/provisioning/.terraform.d/
       - TF_VAR_aws_access_key=${AWS_ACCESS_KEY_ID}
       - TF_VAR_aws_default_region=${AWS_DEFAULT_REGION}
       - TF_VAR_aws_secret_key=${AWS_SECRET_ACCESS_KEY}
@@ -28,7 +28,6 @@ services:
       - TF_VAR_project_unique_id=${PROJECT_UNIQUE_ID}
     user: "${UID:-0}:${GID:-0}"
     volumes:
-      - provisioning-tmp:/tmp/provisioning
       - provisioning-home-root:/root # for macOS
       - provisioning-home-developer:/home/developer
       - /var/run/docker.sock:/var/run/docker.sock
@@ -36,10 +35,9 @@ services:
       - ./config:/project/config
       - ./provisioning:/project/workspace
       - ./scripts:/project/scripts
+      - ./tmp/provisioning:/tmp/provisioning
     working_dir: /project/workspace
 volumes:
-  provisioning-tmp:
-    driver: local
   provisioning-home-root:
     driver: local
   provisioning-home-developer:
