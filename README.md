@@ -63,3 +63,10 @@ Now you can make provisioning as follows.
 docker-compose up
 docker-compose run provisioning terraform plan
 ```
+
+## How to get credentials for GitHub Actions
+
+```shellsession
+docker-compose run provisioning terraform output github-actions-admin-credentials
+docker-compose run provisioning terraform output github-actions-owner-credentials-json
+```
