@@ -2,12 +2,12 @@
 # Terraform configuration
 
 terraform {
-  required_version = "0.13.5"
+  required_version = "0.14.6"
 
   required_providers {
-    aws         = "3.16.0"
-    google      = "3.48.0"
-    google-beta = "3.48.0"
+    aws         = "3.27.0"
+    google      = "3.55.0"
+    google-beta = "3.55.0"
   }
 
   backend "gcs" {
