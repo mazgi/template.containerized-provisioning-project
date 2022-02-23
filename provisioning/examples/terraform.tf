@@ -3,7 +3,7 @@
 
 terraform {
   # https://www.terraform.io/downloads.html
-  required_version = "0.15.0"
+  required_version = "1.1.6"
 
   required_providers {
     # https://registry.terraform.io/providers/hashicorp/aws/latest
