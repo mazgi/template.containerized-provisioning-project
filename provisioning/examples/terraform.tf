@@ -7,10 +7,25 @@ terraform {
 
   required_providers {
     # https://registry.terraform.io/providers/hashicorp/aws/latest
-    aws         = "3.37.0"
+    aws = {
+      source  = "hashicorp/aws"
+      version = "=4.2.0"
+    }
+    # https://registry.terraform.io/providers/hashicorp/azurerm/latest
+    azurerm = {
+      source  = "hashicorp/azurerm"
+      version = "=2.97.0"
+    }
     # https://registry.terraform.io/providers/hashicorp/google/latest
-    google      = "3.64.0"
-    google-beta = "3.64.0"
+    google = {
+      source  = "hashicorp/google"
+      version = "=4.11.0"
+    }
+    # https://registry.terraform.io/providers/hashicorp/google-beta/latest
+    google-beta = {
+      source  = "hashicorp/google-beta"
+      version = "=4.11.0"
+    }
   }
 
   backend "gcs" {
