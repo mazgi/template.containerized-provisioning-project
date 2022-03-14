@@ -13,6 +13,12 @@ You should create an AWS IAM user under the name `provisioning-admin` that attac
 
 - `AdministratorAccess`
 
+### How to set up your Azure service principal
+
+You should create an Azure service principal under the name `provisioning-owner` that added follows roles.
+
+- `Owner`
+
 ### How to set up your GCP service account
 
 You should create a GCP service account under the name `provisioning-owner` that added follows roles.
