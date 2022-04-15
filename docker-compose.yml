@@ -8,6 +8,7 @@ x-service-provisioning-base: &provisioning-base
   #   - zsh
   #   - -ic
   #   - |
+  #     rm -rf /tmp/provisioning/.terraform.d
   #     /project/scripts/provisioning.init-with-azure.sh
   #     /project/scripts/provisioning.init-with-google.sh
   environment:
