@@ -40,6 +40,10 @@ PROJECT_UNIQUE_ID=YOUR_PROJECT_UNIZUE_ID
 EOE
 ```
 
+```console
+echo TF_VAR_allowed_ipaddr_list='["'$(curl -sL ifconfig.io)'/32"]' >> .env
+```
+
 Place your credentials into `config/${CURRENT_ENV_NAME}/credentials/` directory.  
 If you are using [1Password command-line tool](https://1password.com/downloads/command-line/), you can get credentials as follows from your 1Password vault.
 

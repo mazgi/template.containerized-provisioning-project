@@ -27,6 +27,7 @@ x-service-provisioning-base: &provisioning-base
     - CLOUDSDK_CORE_PROJECT
     - GOOGLE_APPLICATION_CREDENTIALS=/project/config/${CURRENT_ENV_NAME}/credentials/google-cloud-keyfile.json
     - TF_DATA_DIR=/tmp/provisioning/.terraform.d/
+    - TF_VAR_allowed_ipaddr_list=${TF_VAR_allowed_ipaddr_list}
     - TF_VAR_aws_access_key=${AWS_ACCESS_KEY_ID}
     - TF_VAR_aws_default_region=${AWS_DEFAULT_REGION}
     - TF_VAR_aws_secret_key=${AWS_SECRET_ACCESS_KEY}

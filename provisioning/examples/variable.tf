@@ -1,5 +1,9 @@
 variable "project_unique_id" {}
 
+variable "allowed_ipaddr_list" {
+  type = list(any)
+}
+
 variable "base_dnsdomain" {
   default = "example.dev"
 }
