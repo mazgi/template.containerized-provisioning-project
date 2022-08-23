@@ -13,7 +13,7 @@ if [[ ! -v PROJECT_UNIQUE_ID ]]; then
   exit 0
 fi
 
-readonly BUCKET_NAME_FOR_PROVISIONING="${PROJECT_UNIQUE_ID}-${CURRENT_ENV_NAME}-provisioning"
+readonly BUCKET_NAME_FOR_PROVISIONING="${PROJECT_UNIQUE_ID}-provisioning"
 
 # Auth gcloud
 gcloud auth activate-service-account --key-file=${GOOGLE_APPLICATION_CREDENTIALS}

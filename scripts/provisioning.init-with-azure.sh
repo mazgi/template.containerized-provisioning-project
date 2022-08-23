@@ -13,7 +13,7 @@ if [[ ! -v PROJECT_UNIQUE_ID ]]; then
   exit 0
 fi
 
-readonly RESOURCE_GROUP_FOR_PROVISIONING="rg-${PROJECT_UNIQUE_ID}-${CURRENT_ENV_NAME}-provisioning"
+readonly RESOURCE_GROUP_FOR_PROVISIONING="rg-${PROJECT_UNIQUE_ID}-provisioning"
 readonly STORAGE_ACCOUNT_FOR_PROVISIONING="$(echo ${PROJECT_UNIQUE_ID} | tr --complement --delete '0-9a-z' | cut -c-24)"
 readonly CONTAINER_NAME_FOR_PROVISIONING="provisioning"
 

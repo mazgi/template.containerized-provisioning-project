@@ -13,7 +13,6 @@ jobs:
           AWS_ACCOUNT_ID=YOUR_AWS_ACCOUNT_ID
           AWS_DEFAULT_REGION=us-east-1
           CLOUDSDK_CORE_PROJECT=YOUR_GCP_PROJECT_ID
-          CURRENT_ENV_NAME=production
           PROJECT_UNIQUE_ID=YOUR_GCP_PROJECT_UNIZUE_ID
           EOE
       - run: |
@@ -23,7 +22,6 @@ jobs:
       # - run: |
       #     echo "AWS_ACCESS_KEY_ID=${PROVISIONING_AWS_ACCESS_KEY_ID}" >> .env
       #     echo "AWS_SECRET_ACCESS_KEY=${PROVISIONING_AWS_SECRET_ACCESS_KEY}" >> .env
-      #     echo ${PROVISIONING_GOOGLE_SA_KEY} > config/$(grep -e '^\s*CURRENT_ENV_NAME\s*=' .env | sed -e 's/CURRENT_ENV_NAME=//')/credentials/google-cloud-keyfile.json
       #   env:
       #     PROVISIONING_AWS_ACCESS_KEY_ID: ${{ secrets.PROVISIONING_AWS_ACCESS_KEY_ID }}
       #     PROVISIONING_AWS_SECRET_ACCESS_KEY: ${{ secrets.PROVISIONING_AWS_SECRET_ACCESS_KEY }}

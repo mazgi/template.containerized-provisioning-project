@@ -12,7 +12,6 @@ x-service-provisioning-base: &provisioning-base
   #     /project/scripts/provisioning.init-with-azure.sh
   #     /project/scripts/provisioning.init-with-google.sh
   environment:
-    - CURRENT_ENV_NAME
     - PROJECT_UNIQUE_ID
     - AWS_ACCESS_KEY_ID
     - AWS_ACCOUNT_ID
@@ -23,9 +22,9 @@ x-service-provisioning-base: &provisioning-base
     - ARM_CLIENT_SECRET
     - ARM_SUBSCRIPTION_ID
     - ARM_TENANT_ID
-    - AZURE_SERVICE_PRINCIPAL=/project/config/${CURRENT_ENV_NAME}/credentials/azure-service-principal.json
+    - AZURE_SERVICE_PRINCIPAL=/project/config/credentials/azure-service-principal.json
     - CLOUDSDK_CORE_PROJECT
-    - GOOGLE_APPLICATION_CREDENTIALS=/project/config/${CURRENT_ENV_NAME}/credentials/google-cloud-keyfile.json
+    - GOOGLE_APPLICATION_CREDENTIALS=/project/config/credentials/google-cloud-keyfile.json
     - TF_DATA_DIR=/tmp/provisioning/.terraform.d/
     - TF_VAR_allowed_ipaddr_list=${TF_VAR_allowed_ipaddr_list}
     - TF_VAR_aws_access_key=${AWS_ACCESS_KEY_ID}

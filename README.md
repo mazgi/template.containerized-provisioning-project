@@ -35,7 +35,6 @@ rm -f .env
 test $(uname -s) = 'Linux' && echo "UID=$(id -u)\nGID=$(id -g)" >> .env
 echo "DOCKER_GID=$(getent group docker | cut -d : -f 3)" >> .env
 cat<<EOE >> .env
-CURRENT_ENV_NAME=production
 PROJECT_UNIQUE_ID=YOUR_PROJECT_UNIZUE_ID
 EOE
 ```
@@ -44,15 +43,15 @@ EOE
 echo TF_VAR_allowed_ipaddr_list='["'$(curl -sL ifconfig.io)'/32"]' >> .env
 ```
 
-Place your credentials into `config/${CURRENT_ENV_NAME}/credentials/` directory.  
+Place your credentials into `config/credentials/` directory.  
 If you are using [1Password command-line tool](https://1password.com/downloads/command-line/), you can get credentials as follows from your 1Password vault.
 
 ```shellsession
 eval $(op signin my)
 source .env
-op get document arn:aws:iam::${AWS_ACCOUNT_ID}:user/provisioning-admin > config/${CURRENT_ENV_NAME}/credentials/new_user_credentials.csv
-op get document azure-service-principal.json > config/${CURRENT_ENV_NAME}/credentials/azure-service-principal.json
-op get document provisioning-owner@${CLOUDSDK_CORE_PROJECT}.iam.gserviceaccount.com > config/${CURRENT_ENV_NAME}/credentials/google-cloud-keyfile.json
+op get document arn:aws:iam::${AWS_ACCOUNT_ID}:user/provisioning-admin > config/credentials/new_user_credentials.csv
+op get document azure-service-principal.json > config/credentials/azure-service-principal.json
+op get document provisioning-owner@${CLOUDSDK_CORE_PROJECT}.iam.gserviceaccount.com > config/credentials/google-cloud-keyfile.json
 ```
 
 ### AWS
@@ -63,8 +62,8 @@ You need update the `.env` file as follows.
 source .env
 echo "AWS_ACCOUNT_ID=YOUR_AWS_ACCOUNT_ID" >> .env
 echo "AWS_DEFAULT_REGION=us-east-1" >> .env
-echo "AWS_ACCESS_KEY_ID=$(tail -1 config/${CURRENT_ENV_NAME}/credentials/new_user_credentials.csv | cut -d, -f3)" >> .env
-echo "AWS_SECRET_ACCESS_KEY=$(tail -1 config/${CURRENT_ENV_NAME}/credentials/new_user_credentials.csv | cut -d, -f4)" >> .env
+echo "AWS_ACCESS_KEY_ID=$(tail -1 config/credentials/new_user_credentials.csv | cut -d, -f3)" >> .env
+echo "AWS_SECRET_ACCESS_KEY=$(tail -1 config/credentials/new_user_credentials.csv | cut -d, -f4)" >> .env
 ```
 
 ### Azure
@@ -72,9 +71,9 @@ echo "AWS_SECRET_ACCESS_KEY=$(tail -1 config/${CURRENT_ENV_NAME}/credentials/new
 ```shellsession
 source .env
 echo "ARM_SUBSCRIPTION_ID=YOUR_SUBSCRIPTION" >> .env
-echo "ARM_CLIENT_ID=$(jq -r .appId config/${CURRENT_ENV_NAME}/credentials/azure-service-principal.json)" >> .env
-echo "ARM_CLIENT_SECRET=$(jq -r .password config/${CURRENT_ENV_NAME}/credentials/azure-service-principal.json)" >> .env
-echo "ARM_TENANT_ID=$(jq -r .tenant config/${CURRENT_ENV_NAME}/credentials/azure-service-principal.json)" >> .env
+echo "ARM_CLIENT_ID=$(jq -r .appId config/credentials/azure-service-principal.json)" >> .env
+echo "ARM_CLIENT_SECRET=$(jq -r .password config/credentials/azure-service-principal.json)" >> .env
+echo "ARM_TENANT_ID=$(jq -r .tenant config/credentials/azure-service-principal.json)" >> .env
 ```
 
 ### Google Cloud

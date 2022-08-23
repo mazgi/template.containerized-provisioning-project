@@ -26,7 +26,7 @@ See also https://docs.microsoft.com/en-us/cli/azure/ad/sp?view=azure-cli-latest#
 
 ```console
 az ad sp create-for-rbac --name=provisioning-owner --role="Owner" --scopes=/subscriptions/${SUBSCRIPTION_ID}\
- | tee /project/config/${CURRENT_ENV_NAME}/credentials/azure-service-principal.json
+ | tee /project/config/credentials/azure-service-principal.json
 ```
 
 ## Tips
