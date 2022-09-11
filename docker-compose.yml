@@ -83,6 +83,8 @@ x-service-provisioning-base: &provisioning-base
 
 # You are able to implement your service like below.
 services:
+  # provisioning:
+  #   <<: *provisioning-base
   provisioning-azurerm-backend:
     <<: *provisioning-base
     environment:
@@ -105,7 +107,7 @@ services:
     profiles:
       - s3
 
-version: "3.8"
+version: "3.9"
 volumes:
   provisioning-home-developer:
     driver: local
