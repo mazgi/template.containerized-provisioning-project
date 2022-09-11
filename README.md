@@ -1,100 +1,129 @@
 # template.dockerized-provisioning-project
 
-[![default](https://github.com/mazgi/template.dockerized-provisioning-project/workflows/default/badge.svg)](https://github.com/mazgi/template.dockerized-provisioning-project/actions?query=workflow%3Adefault)
+[![default](https://github.com/mazgi/template.dockerized-provisioning-project/actions/workflows/default.yml/badge.svg)](https://github.com/mazgi/template.dockerized-provisioning-project/actions/workflows/default.yml)
 
-## How to set up
+This repository is a template for provisioning your Cloud and Local environment using [Terraform](https://www.terraform.io/) and [Ansible](https://www.ansible.com/).
 
-You need one AWS account and one GCP project each of you can fully manage.  
-And you need to get credentials after you set up system accounts for provisioning as described below.
+## How to Use
 
-### How to set up your AWS IAM user
+<u>Docker and [Docker Compose](https://docs.docker.com/compose/)</u> are needed. If you want to provision only local environments, that's all.
 
-You should create an AWS IAM user under the name `provisioning-admin` that attached follows permissions.
+However, if you want to provision a cloud environment, you need permission that can administer for at least one cloud: [AWS](https://aws.amazon.com/), [Azure](https://azure.microsoft.com/), or [Google Cloud](https://cloud.google.com/).  
+And you need to set up the repository following steps.
 
-- `AdministratorAccess`
+### Step 1. Write out your IDs and credentials in the .env file.
 
-### How to set up your Azure service principal
+You should write your account IDs and credentials depending on your need, such as AWS, Azure, and Google Cloud, in the `.env` file as follows.
 
-You should create an Azure service principal under the name `provisioning-owner` that added follows roles.
+```.env
+PROJECT_UNIQUE_ID=my-unique-b78e
+_TERRAFORM_BACKEND_TYPE=azurerm
+TF_VAR_allowed_ipaddr_list=["203.0.113.0/24"]
+#
+# <AWS>
+AWS_ACCESS_KEY_ID=AKXXXXXXXX
+AWS_ACCOUNT_ID=123456789012
+# AWS_DEFAULT_REGION=us-east-1
+AWS_SECRET_ACCESS_KEY=AWxxxxxxxx00000000
+# </AWS>
+#
+# <Azure>
+# AZURE_DEFAULT_LOCATION=centralus
+ARM_CLIENT_ID=xxxxxxxx-0000-0000-0000-xxxxxxxxxxxx
+ARM_CLIENT_SECRET=ARxxxxxxxx00000000
+ARM_SUBSCRIPTION_ID=yyyyyyyy-0000-0000-0000-yyyyyyyyyyyy
+ARM_TENANT_ID=zzzzzzzz-0000-0000-0000-zzzzzzzzzzzz
+# </Azure>
+#
+# <Google>
+# GCP_DEFAULT_REGION=us-central1
+CLOUDSDK_CORE_PROJECT=my-proj-b78e
+# </Google>
+```
 
-- `Owner`
+In addition, if you use Google Cloud, you should place the [key file for Google Cloud Service Account](https://cloud.google.com/iam/docs/creating-managing-service-account-keys) as `config/credentials/google-cloud-keyfile.provisioning-owner.json`.
 
-### How to set up your GCP service account
+#### Environment Variable Names
 
-You should create a GCP service account under the name `provisioning-owner` that added follows roles.
+Environment variable names and uses are as follows.
 
-- `Project Owner`
-- `Storage Admin`
+| Name                       | Required with Terraform | Value                                                                                                           |
+| -------------------------- | ----------------------- | --------------------------------------------------------------------------------------------------------------- |
+| PROJECT_UNIQUE_ID          | **Yes**                 | An ID to indicate your environment.<br/>The value is used for an Object Storage bucket or Storage Account name. |
+| \_TERRAFORM_BACKEND_TYPE   | **Yes**                 | Acceptable values are `azurerm`, `gcs`, and `s3`.                                                               |
+| TF_VAR_allowed_ipaddr_list | no                      | IP address ranges you want access to your cloud environment.                                                    |
 
-### How to set up your local environment
+</details>
+<details>
+<summary>AWS</summary>
 
-You need create the `.env` file as follows.
+| Name                  | Required with AWS | Value                                                                                                                                                 |
+| --------------------- | ----------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------- |
+| AWS_ACCOUNT_ID        | **Yes**           | A 12-digit AWS Account ID you want to provision.<br/>The S3 bucket is created in this account to store the tfstate file if you choose the S3 backend. |
+| AWS_ACCESS_KEY_ID     | **Yes**           | An AWS Access Key for the IAM user that is used to create the S3 bucket to store tfstate file and apply all in your AWS environment.                  |
+| AWS_SECRET_ACCESS_KEY | **Yes**           |                                                                                                                                                       |
+| AWS_DEFAULT_REGION    | no                |                                                                                                                                                       |
 
-```shellsession
-rm -f .env
-test $(uname -s) = 'Linux' && echo "UID=$(id -u)\nGID=$(id -g)" >> .env
-echo "DOCKER_GID=$(getent group docker | cut -d : -f 3)" >> .env
-cat<<EOE >> .env
-PROJECT_UNIQUE_ID=YOUR_PROJECT_UNIZUE_ID
-EOE
+</details>
+<details>
+<summary>Azure</summary>
+
+| Name                   | Required with Azure | Value                                                                                                                                                                                                                  |
+| ---------------------- | ------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| ARM_TENANT_ID          | **Yes**             | A UUID to indicate Azure Tenant.                                                                                                                                                                                       |
+| ARM_SUBSCRIPTION_ID    | **Yes**             | A UUID to indicate Azure Subscription you want to provision.<br/>The Resource Group, Storage Account, and Blob Container are created in this subscription to store the tfstate file if you choose the AzureRM backend. |
+| ARM_CLIENT_ID          | **Yes**             |                                                                                                                                                                                                                        |
+| ARM_CLIENT_SECRET      | **Yes**             |                                                                                                                                                                                                                        |
+| AZURE_DEFAULT_LOCATION | no                  |                                                                                                                                                                                                                        |
+
+</details>
+<details>
+<summary>Google Cloud</summary>
+
+| Name                  | Required with Azure | Value                                                                                                                                                                                                                                                                                                                   |
+| --------------------- | ------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| CLOUDSDK_CORE_PROJECT | **Yes**             | A string Project ID to indicate Google Cloud Project you want to provision, Not Project name or Project number.<br/>The Cloud Storage Bucket is created in this project to store the tfstate file if you choose the GCS backend.<br/>See also https://cloud.google.com/resource-manager/docs/creating-managing-projects |
+| GCP_DEFAULT_REGION    | no                  |                                                                                                                                                                                                                                                                                                                         |
+
+</details>
+
+### Step 2. Define your service in the `docker-compose.yml`
+
+Comment-in the `provisioning` service in the [`docker-compose.yml`](docker-compose.yml) as follows or define a service you own.
+
+```yaml
+services:
+  # provisioning:
+  #   <<: *provisioning-base
+```
+
+:arrow_down:
+
+```yaml
+services:
+  provisioning:
+    <<: *provisioning-base
+```
+
+Now, you are able to provision your environment as follows. :tada:
+
+```console
+docker compose up
 ```
 
 ```console
-echo TF_VAR_allowed_ipaddr_list='["'$(curl -sL ifconfig.io)'/32"]' >> .env
+docker compose exec provisioning terraform apply
 ```
 
-Place your credentials into `config/credentials/` directory.  
-If you are using [1Password command-line tool](https://1password.com/downloads/command-line/), you can get credentials as follows from your 1Password vault.
+### Step 3. Set secrets for GitHub Actions
 
-```shellsession
-eval $(op signin my)
-source .env
-op get document arn:aws:iam::${AWS_ACCOUNT_ID}:user/provisioning-admin > config/credentials/new_user_credentials.csv
-op get document azure-service-principal.json > config/credentials/azure-service-principal.json
-op get document provisioning-owner@${CLOUDSDK_CORE_PROJECT}.iam.gserviceaccount.com > config/credentials/google-cloud-keyfile.json
+The [gh command](https://cli.github.com/) helps set secrets.
+
+```console
+gh secret set --app actions --env-file .env
 ```
 
-### AWS
-
-You need update the `.env` file as follows.
-
-```shellsession
-source .env
-echo "AWS_ACCOUNT_ID=YOUR_AWS_ACCOUNT_ID" >> .env
-echo "AWS_DEFAULT_REGION=us-east-1" >> .env
-echo "AWS_ACCESS_KEY_ID=$(tail -1 config/credentials/new_user_credentials.csv | cut -d, -f3)" >> .env
-echo "AWS_SECRET_ACCESS_KEY=$(tail -1 config/credentials/new_user_credentials.csv | cut -d, -f4)" >> .env
-```
-
-### Azure
-
-```shellsession
-source .env
-echo "ARM_SUBSCRIPTION_ID=YOUR_SUBSCRIPTION" >> .env
-echo "ARM_CLIENT_ID=$(jq -r .appId config/credentials/azure-service-principal.json)" >> .env
-echo "ARM_CLIENT_SECRET=$(jq -r .password config/credentials/azure-service-principal.json)" >> .env
-echo "ARM_TENANT_ID=$(jq -r .tenant config/credentials/azure-service-principal.json)" >> .env
-```
-
-### Google Cloud
-
-```shellsession
-source .env
-echo "CLOUDSDK_CORE_PROJECT=YOUR_GCP_PROJECT_ID" >> .env
-```
-
-## How to run
-
-Now you can make provisioning as follows.
-
-```shellsession
-docker-compose up
-docker-compose run provisioning terraform plan
-```
-
-## How to get credentials for GitHub Actions
-
-```shellsession
-docker-compose run provisioning terraform output github-actions-admin-credentials
-docker-compose run provisioning terraform output github-actions-owner-credentials-json
+```console
+cat config/credentials/google-cloud-keyfile.provisioning-owner.json\
+ | gh secret set GOOGLE_SA_KEY --app=actions
 ```
