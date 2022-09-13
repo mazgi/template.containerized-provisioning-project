@@ -13,7 +13,7 @@ x-service-provisioning-base: &provisioning-base
       mkdir -p $${_STAT_DIR:?}/
       export _STAT_DIR_INTERNAL=/tmp/container-myself
       ln --force --no-dereference --symbolic $${_STAT_DIR:?}/ $${_STAT_DIR_INTERNAL:?}
-      echo '{}' | jq '. + {enabled:true}' > $${_STAT_DIR_INTERNAL}/stat.json
+      echo '{}' | jq '. + {enabled:true}' | tee $${_STAT_DIR_INTERNAL}/stat.tmp.json > $${_STAT_DIR_INTERNAL}/stat.json
       :
       rm -rf /workspace/tmp/provisioning/.terraform.d
       /workspace/scripts/provisioning.init-terraform-with-$${_TERRAFORM_BACKEND_TYPE}-backend.zsh\
@@ -52,7 +52,7 @@ x-service-provisioning-base: &provisioning-base
     GCP_DEFAULT_REGION: ${GCP_DEFAULT_REGION:-us-central1}
     GOOGLE_APPLICATION_CREDENTIALS: ${GOOGLE_APPLICATION_CREDENTIALS:-/workspace/config/credentials/google-cloud-keyfile.provisioning-owner.json}
     # </Google>
-    _TERRAFORM_BACKEND_TYPE: ~
+    _TERRAFORM_BACKEND_TYPE: none
     TF_DATA_DIR: /tmp/provisioning/.terraform.d/
     TF_VAR_allowed_ipaddr_list: ${TF_VAR_allowed_ipaddr_list}
     TF_VAR_aws_access_key: ${AWS_ACCESS_KEY_ID}
@@ -83,8 +83,10 @@ x-service-provisioning-base: &provisioning-base
 
 # You are able to implement your service like below.
 services:
-  # provisioning:
-  #   <<: *provisioning-base
+  provisioning:
+    <<: *provisioning-base
+
+  # The following services are for Demonstration and CI/CD purposes; therefore, you can remove these.
   provisioning-azurerm-backend:
     <<: *provisioning-base
     environment:

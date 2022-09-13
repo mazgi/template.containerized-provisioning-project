@@ -50,7 +50,7 @@ Environment variable names and uses are as follows.
 | Name                       | Required with Terraform | Value                                                                                                           |
 | -------------------------- | ----------------------- | --------------------------------------------------------------------------------------------------------------- |
 | PROJECT_UNIQUE_ID          | **Yes**                 | An ID to indicate your environment.<br/>The value is used for an Object Storage bucket or Storage Account name. |
-| \_TERRAFORM_BACKEND_TYPE   | **Yes**                 | Acceptable values are `azurerm`, `gcs`, and `s3`.                                                               |
+| \_TERRAFORM_BACKEND_TYPE   | **Yes**                 | Acceptable values are `azurerm`, `gcs`, `s3`, and `none`.                                                       |
 | TF_VAR_allowed_ipaddr_list | no                      | IP address ranges you want access to your cloud environment.                                                    |
 
 </details>
@@ -89,15 +89,7 @@ Environment variable names and uses are as follows.
 
 ### Step 2. Define your service in the `docker-compose.yml`
 
-Comment-in the `provisioning` service in the [`docker-compose.yml`](docker-compose.yml) as follows or define a service you own.
-
-```yaml
-services:
-  # provisioning:
-  #   <<: *provisioning-base
-```
-
-:arrow_down:
+You are able to update and define the `provisioning` service to your need in the [`docker-compose.yml`](docker-compose.yml).
 
 ```yaml
 services:
@@ -113,6 +105,10 @@ docker compose up
 
 ```console
 docker compose exec provisioning terraform apply
+```
+
+```console
+rm -rf tmp/run/container-*/ && docker compose down --remove-orphans
 ```
 
 ### Step 3. Set secrets for GitHub Actions
