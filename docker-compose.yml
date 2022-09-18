@@ -52,7 +52,7 @@ x-service-provisioning-base: &provisioning-base
     GCP_DEFAULT_REGION: ${GCP_DEFAULT_REGION:-us-central1}
     GOOGLE_APPLICATION_CREDENTIALS: ${GOOGLE_APPLICATION_CREDENTIALS:-/workspace/config/credentials/google-cloud-keyfile.provisioning-owner.json}
     # </Google>
-    _TERRAFORM_BACKEND_TYPE: none
+    _TERRAFORM_BACKEND_TYPE: ${_TERRAFORM_BACKEND_TYPE:-none}
     TF_DATA_DIR: /tmp/provisioning/.terraform.d/
     TF_VAR_allowed_ipaddr_list: ${TF_VAR_allowed_ipaddr_list}
     TF_VAR_aws_access_key: ${AWS_ACCESS_KEY_ID}
