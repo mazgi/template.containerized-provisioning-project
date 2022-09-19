@@ -30,7 +30,7 @@ AWS_SECRET_ACCESS_KEY=AWxxxxxxxx00000000
 # <Azure>
 # AZURE_DEFAULT_LOCATION=centralus
 ARM_CLIENT_ID=xxxxxxxx-0000-0000-0000-xxxxxxxxxxxx
-ARM_CLIENT_SECRET=ARxxxxxxxx00000000
+ARM_CLIENT_SECRET=********
 ARM_SUBSCRIPTION_ID=yyyyyyyy-0000-0000-0000-yyyyyyyyyyyy
 ARM_TENANT_ID=zzzzzzzz-0000-0000-0000-zzzzzzzzzzzz
 # </Azure>
@@ -66,7 +66,12 @@ Environment variable names and uses are as follows.
 
 </details>
 <details>
-<summary>Azure</summary>
+<summary>
+Azure
+
+You are able to generate Azure Service Principal according to the [how-to-create-azure-service-principal.md](docs/how-to-create-azure-service-principal.md).
+
+</summary>
 
 | Name                   | Required with Azure | Value                                                                                                                                                                                                                  |
 | ---------------------- | ------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
