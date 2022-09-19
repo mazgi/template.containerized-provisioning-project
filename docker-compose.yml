@@ -16,7 +16,7 @@ x-service-provisioning-base: &provisioning-base
       echo '{}' | jq '. + {enabled:true}' | tee $${_STAT_DIR_INTERNAL}/stat.tmp.json > $${_STAT_DIR_INTERNAL}/stat.json
       :
       rm -rf /workspace/tmp/provisioning/.terraform.d
-      /workspace/scripts/provisioning.init-terraform-with-$${_TERRAFORM_BACKEND_TYPE}-backend.zsh\
+      /workspace/scripts/provisioning.init-terraform-with-backend.zsh --backend=$${_TERRAFORM_BACKEND_TYPE}\
        || jq '. + {succeeded:false}' $${_STAT_DIR_INTERNAL}/stat.json > $${_STAT_DIR_INTERNAL}/stat.tmp.json
       mv -f $${_STAT_DIR_INTERNAL}/stat{.tmp,}.json
       :
