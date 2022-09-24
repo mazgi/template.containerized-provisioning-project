@@ -57,7 +57,12 @@ exitBecauseOfInsufficientCredentials() {
 }
 
 disableUnnecessaryBackendConfigs() {
-  for unnecessary_tf in $(ls -1 backend.*.tf~*${TFSTATE_BACKEND_TYPE}*)
+  # Suppress the 'zsh: no matches found:' message.
+  # See
+  #   - https://zsh.sourceforge.io/Doc/Release/Options.html#Expansion-and-Globbing
+  #   - https://zsh.sourceforge.io/Doc/Release/Options.html#index-LOCALOPTIONS
+  unsetopt local_options nomatch
+  for unnecessary_tf in $(ls -1 backend.*.tf~*${TFSTATE_BACKEND_TYPE}* 2> /dev/null || true)
   do
     echoWarn "WARN: The backend config ${unnecessary_tf} will be renamed to disable."
     echoWarn "$(mv --verbose ${unnecessary_tf}{,.disabled.txt})"
