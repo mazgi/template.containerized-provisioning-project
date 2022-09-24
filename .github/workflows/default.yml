@@ -25,6 +25,9 @@ jobs:
           echo "UID=$(id -u)" >> .env
           echo "GID=$(id -g)" >> .env
           echo "DOCKER_GID=$(getent group docker | cut -d : -f 3)" >> .env
+      - name: Set the backend type to ${{ matrix.backend }}
+        run: |
+          echo "_TERRAFORM_BACKEND_TYPE=${{ matrix.backend }}" >> .env
       - name: Export credentials
         run: |
           echo "PROJECT_UNIQUE_ID=${PROJECT_UNIQUE_ID}" >> .env
@@ -54,18 +57,18 @@ jobs:
           GOOGLE_SA_KEY: ${{ secrets.GOOGLE_SA_KEY }}
       - name: (debug)Check services
         run: |
-          docker compose --profile=${{ matrix.backend }} config
+          docker compose config
       - name: Build containers
         timeout-minutes: 4
         run: |
-          docker compose --profile=${{ matrix.backend }} build
+          docker compose build
       - name: Start the service
         timeout-minutes: 4
         run: |
-          docker compose --profile=${{ matrix.backend }} up --detach
+          docker compose up --detach
           while :
           do
-            docker compose --profile=${{ matrix.backend }} ps --format=json provisioning-${{ matrix.backend }}-backend\
+            docker compose ps --format=json provisioning\
              | jq -e '.[] | select(.Health=="healthy")' 2> /dev/null\
              && break
             sleep 1
@@ -73,22 +76,22 @@ jobs:
       - name: Show service logs
         timeout-minutes: 1
         run: |
-          docker compose --profile=${{ matrix.backend }} logs
+          docker compose logs
       - name: Exec Terraform - check the format for each tf file
         run: |
-          docker compose --profile=${{ matrix.backend }} exec provisioning-${{ matrix.backend }}-backend terraform fmt -check
+          docker compose exec provisioning terraform fmt -check
       - name: Exec Terraform - validate
         run: |
-          docker compose --profile=${{ matrix.backend }} exec provisioning-${{ matrix.backend }}-backend terraform validate
+          docker compose exec provisioning terraform validate
       - name: Exec Terraform - dry-run
         timeout-minutes: 1
         run: |
-          docker compose --profile=${{ matrix.backend }} exec provisioning-${{ matrix.backend }}-backend terraform plan
+          docker compose exec provisioning terraform plan
       - name: Exec Terraform - apply
         timeout-minutes: 1
         if: github.ref == 'refs/heads/main'
         run: |
-          docker compose --profile=${{ matrix.backend }} exec provisioning-${{ matrix.backend }}-backend terraform apply -auto-approve
+          docker compose exec provisioning terraform apply -auto-approve
       - name: Stop the service
         timeout-minutes: 1
         run: |

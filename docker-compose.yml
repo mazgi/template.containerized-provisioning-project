@@ -86,29 +86,6 @@ services:
   provisioning:
     <<: *provisioning-base
 
-  # The following services are for Demonstration and CI/CD purposes; therefore, you can remove these.
-  provisioning-azurerm-backend:
-    <<: *provisioning-base
-    environment:
-      <<: *provisioning-base-environment
-      _TERRAFORM_BACKEND_TYPE: azurerm
-    profiles:
-      - azurerm
-  provisioning-gcs-backend:
-    <<: *provisioning-base
-    environment:
-      <<: *provisioning-base-environment
-      _TERRAFORM_BACKEND_TYPE: gcs
-    profiles:
-      - gcs
-  provisioning-s3-backend:
-    <<: *provisioning-base
-    environment:
-      <<: *provisioning-base-environment
-      _TERRAFORM_BACKEND_TYPE: s3
-    profiles:
-      - s3
-
 version: "3.9"
 volumes:
   provisioning-home-developer:
