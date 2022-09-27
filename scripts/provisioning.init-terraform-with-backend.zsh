@@ -23,14 +23,7 @@ if [[ ${#funcstack[@]} -ne 0 ]]; then
   return 1
 fi
 
-if [[ ! -v PROJECT_UNIQUE_ID ]]; then
-  echoErr 'Please set the $PROJECT_UNIQUE_ID variable.'
-  echoErr 'It was canceled.'
-  exit 2
-fi
-
 local backends_are_validated=()
-
 readonly TFSTATE_BACKEND_TYPES=(azurerm gcs s3 none)
 showHelp() {
   echo "Usage: ${SCRIPT_NAME} [OPTIONS]"
@@ -70,15 +63,17 @@ disableUnnecessaryBackendConfigs() {
 }
 
 updateAndPrepareTerraform() {
+  sudo mkdir -p ${TF_DATA_DIR}
+  sudo chmod a+rwx ${TF_DATA_DIR}
+  sudo mkdir -p ${TF_PLUGIN_CACHE_DIR}
+  sudo chmod a+rwx ${TF_PLUGIN_CACHE_DIR}
+
   # Detect terraform version
   rm -f .terraform-version
   sudo tfenv install min-required
   sudo tfenv use min-required
   terraform version -json | jq -r '.terraform_version' | tee -a /tmp/.terraform-version
   mv /tmp/.terraform-version .
-  # Init terraform
-  mkdir -p ${TF_DATA_DIR}
-  sudo chmod a+rwx ${TF_DATA_DIR}
 }
 
 setupBackendAzureRM() {
@@ -162,11 +157,12 @@ args=$(getopt -o hb: -l help,backend: -- "$@") || exit 1
 eval "set -- $args"
 while [ $# -gt 0 ]; do
   case $1 in
-    -h | --help) showHelp; shift; exit 0;;
+    -h | --help) showHelp; shift; exit 1;;
     -b | --backend) TFSTATE_BACKEND_TYPE=$2; shift 2;;
     --) shift; break;;
   esac
 done
+echoInfo "The backend type \"${TFSTATE_BACKEND_TYPE}\" was specified."
 # Validate the backend type.
 # See https://zsh.sourceforge.io/Guide/zshguide05.html#l121
 if [[ ${TFSTATE_BACKEND_TYPES[(i)${TFSTATE_BACKEND_TYPE}]} -gt ${#TFSTATE_BACKEND_TYPES} ]]; then
@@ -225,7 +221,12 @@ if [[ -v CLOUDSDK_CORE_PROJECT ]] && [[ -v GOOGLE_APPLICATION_CREDENTIALS ]]; th
 fi
 
 case ${TFSTATE_BACKEND_TYPE} in
-  azurerm|gcs|s3)
+  azurerm | gcs | s3)
+    if [[ ! -v PROJECT_UNIQUE_ID ]]; then
+      echoErr 'Please set the $PROJECT_UNIQUE_ID variable.'
+      echoErr 'It was canceled.'
+      exit 2
+    fi
     if [[ ${backends_are_validated[(i)${TFSTATE_BACKEND_TYPE}]} -gt ${#backends_are_validated} ]]; then
       exitBecauseOfInsufficientCredentials
     fi
