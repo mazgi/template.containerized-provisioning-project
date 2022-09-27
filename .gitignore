@@ -1,3 +1,4 @@
 *.env
 .terraform-version
 .terraform.lock.hcl
+node_modules/

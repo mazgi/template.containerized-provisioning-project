@@ -1,6 +1,7 @@
 # template.dockerized-provisioning-project
 
-[![default](https://github.com/mazgi/template.dockerized-provisioning-project/actions/workflows/default.yml/badge.svg)](https://github.com/mazgi/template.dockerized-provisioning-project/actions/workflows/default.yml)
+[![use-multiple-platforms](https://github.com/mazgi/template.dockerized-provisioning-project/actions/workflows/use-multiple-platforms.yml/badge.svg)](https://github.com/mazgi/template.dockerized-provisioning-project/actions/workflows/use-multiple-platforms.yml)
+[![use-one-platform](https://github.com/mazgi/template.dockerized-provisioning-project/actions/workflows/use-one-platform.yml/badge.svg)](https://github.com/mazgi/template.dockerized-provisioning-project/actions/workflows/use-one-platform.yml)
 
 This repository is a template for provisioning your Cloud and Local environment using [Terraform](https://www.terraform.io/) and [Ansible](https://www.ansible.com/).
 
@@ -47,11 +48,11 @@ In addition, if you use Google Cloud, you should place the [key file for Google 
 
 Environment variable names and uses are as follows.
 
-| Name                       | Required with Terraform | Value                                                                                                           |
-| -------------------------- | ----------------------- | --------------------------------------------------------------------------------------------------------------- |
-| PROJECT_UNIQUE_ID          | **Yes**                 | An ID to indicate your environment.<br/>The value is used for an Object Storage bucket or Storage Account name. |
-| \_TERRAFORM_BACKEND_TYPE   | **Yes**                 | Acceptable values are `azurerm`, `gcs`, `s3`, and `none`.                                                       |
-| TF_VAR_allowed_ipaddr_list | no                      | IP address ranges you want access to your cloud environment.                                                    |
+| Name                       | Required with Terraform | Value                                                                                                                                         |
+| -------------------------- | ----------------------- | --------------------------------------------------------------------------------------------------------------------------------------------- |
+| PROJECT_UNIQUE_ID          | **Yes**                 | An ID to indicate your environment.<br/>The value is used for the name of the Object Storage bucket or Storage Account for Terraform backend. |
+| \_TERRAFORM_BACKEND_TYPE   | **Yes**                 | Acceptable values are `azurerm`, `gcs`, `s3`, and `none`.                                                                                     |
+| TF_VAR_allowed_ipaddr_list | no                      | IP address ranges you want access to your cloud environment.                                                                                  |
 
 </details>
 <details>
@@ -105,6 +106,10 @@ services:
 Now, you are able to provision your environment as follows. :tada:
 
 ```console
+docker compose build --no-cache --pull
+```
+
+```console
 docker compose up
 ```
 
@@ -113,7 +118,7 @@ docker compose exec provisioning terraform apply
 ```
 
 ```console
-rm -rf tmp/run/container-*/ && docker compose down --remove-orphans
+docker compose down --remove-orphans
 ```
 
 ### Step 3. Set secrets for GitHub Actions
