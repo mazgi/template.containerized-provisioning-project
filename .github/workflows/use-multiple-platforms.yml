@@ -16,8 +16,6 @@ jobs:
           - s3
         runs-on:
           - ubuntu-latest
-          # - macos-latest
-          # - windows-latest
     steps:
       - uses: actions/checkout@v3
       - name: Export UIDs as environment variables
@@ -104,6 +102,4 @@ jobs:
       - name: Stop the service
         timeout-minutes: 1
         run: |
-          rm -rf tmp/run/container-*/ || true
-          sleep 2
           docker compose down --remove-orphans

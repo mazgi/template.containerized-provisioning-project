@@ -16,11 +16,10 @@ jobs:
           - google-cloud
         runs-on:
           - ubuntu-latest
-          # - macos-latest
-          # - windows-latest
     steps:
       - uses: actions/checkout@v3
-      - name: Export UIDs as environment variables
+      - name: Export UIDs as environment variables, for Linux
+        if: matrix.runs-on == 'ubuntu-latest'
         run: |
           cat<<EOE > .env
           # Todo https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/about-githubs-ip-addresses
@@ -111,6 +110,4 @@ jobs:
       - name: Stop the service
         timeout-minutes: 1
         run: |
-          rm -rf tmp/run/container-*/ || true
-          sleep 2
           docker compose --profile=use-only-${{ matrix.platform }} down --remove-orphans
