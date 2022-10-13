@@ -197,7 +197,8 @@ if [[ -v ARM_CLIENT_ID ]] && [[ -v ARM_CLIENT_SECRET ]] && [[ -v ARM_SUBSCRIPTIO
    --subscription ${ARM_SUBSCRIPTION_ID}
   az account list\
    --query "[?isDefault]"
-  
+  az config set extension.use_dynamic_install=yes_without_prompt
+
   # Set the flag.
   backends_are_validated+=(azurerm)
 fi
