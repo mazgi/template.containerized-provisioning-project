@@ -121,10 +121,16 @@ services:
     <<: *provisioning-base
 ```
 
+Make sure your config.
+
+```console
+docker compose config
+```
+
 Now, you are able to provision your environment as follows. :tada:
 
 ```console
-docker compose build --no-cache --pull
+docker compose build
 ```
 
 ```console
@@ -136,7 +142,7 @@ docker compose exec provisioning terraform apply
 ```
 
 ```console
-docker compose down --remove-orphans
+docker compose down
 ```
 
 ### Step 3. Set secrets for GitHub Actions

@@ -102,4 +102,4 @@ jobs:
       - name: Stop the service
         timeout-minutes: 1
         run: |
-          docker compose down --remove-orphans
+          docker compose down
