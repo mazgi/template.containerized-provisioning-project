@@ -49,8 +49,9 @@ CLOUDSDK_CORE_PROJECT=my-proj-b78e
 
 ```console
 test $(uname -s) = 'Linux' && {
-  echo -e "UID=$(id -u)\nGID=$(id -g)"
   echo -e "DOCKER_GID=$(getent group docker | cut -d : -f 3)"
+  echo -e "GID=$(id -g)"
+  echo -e "UID=$(id -u)"
 } >> .env || :
 ```
 
