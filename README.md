@@ -1,7 +1,7 @@
-# template.dockerized-provisioning-project
+# template.containerized-provisioning-project
 
-[![use-multiple-platforms](https://github.com/mazgi/template.dockerized-provisioning-project/actions/workflows/use-multiple-platforms.yml/badge.svg)](https://github.com/mazgi/template.dockerized-provisioning-project/actions/workflows/use-multiple-platforms.yml)
-[![use-one-platform](https://github.com/mazgi/template.dockerized-provisioning-project/actions/workflows/use-one-platform.yml/badge.svg)](https://github.com/mazgi/template.dockerized-provisioning-project/actions/workflows/use-one-platform.yml)
+[![use-multiple-platforms](https://github.com/mazgi/template.containerized-provisioning-project/actions/workflows/use-multiple-platforms.yml/badge.svg)](https://github.com/mazgi/template.containerized-provisioning-project/actions/workflows/use-multiple-platforms.yml)
+[![use-one-platform](https://github.com/mazgi/template.containerized-provisioning-project/actions/workflows/use-one-platform.yml/badge.svg)](https://github.com/mazgi/template.containerized-provisioning-project/actions/workflows/use-one-platform.yml)
 
 This repository is a template for provisioning your Cloud and Local environment using [Terraform](https://www.terraform.io/) and [Ansible](https://www.ansible.com/).
 
