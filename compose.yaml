@@ -153,7 +153,6 @@ services:
       - .:/workspace
     working_dir: /workspace
 
-version: "3.9"
 volumes:
   provisioning-tmp:
     driver: local
