@@ -6,7 +6,7 @@ on:
 
 jobs:
   provisioning:
-    timeout-minutes: 10
+    timeout-minutes: 16
     runs-on: ${{ matrix.runs-on }}
     strategy:
       matrix:
@@ -70,7 +70,7 @@ jobs:
         run: |
           docker compose build
       - name: Start the service
-        timeout-minutes: 4
+        timeout-minutes: 8
         run: |
           docker compose up --detach
           while :
