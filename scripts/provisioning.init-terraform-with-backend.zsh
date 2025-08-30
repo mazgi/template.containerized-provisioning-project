@@ -70,8 +70,8 @@ updateAndPrepareTerraform() {
 
   # Detect terraform version
   rm -f .terraform-version
-  sudo tfenv install min-required
-  sudo tfenv use min-required
+  sudo tfenv install latest-allowed
+  sudo tfenv use latest-allowed
   terraform version -json | jq -r '.terraform_version' | tee -a /tmp/.terraform-version
   mv /tmp/.terraform-version .
 }
@@ -141,8 +141,6 @@ setupBackendS3() {
 
   # Init Terraform with S3 backend.
   updateAndPrepareTerraform
-  echoWarn 'WARN: The s3 backend currently does not support state locking!'
-  echoWarn 'Please read https://www.terraform.io/language/settings/backends/s3 and https://github.com/hashicorp/terraform/issues/27070'
   terraform init -backend-config="bucket=${BUCKET_NAME_FOR_PROVISIONING}"
 }
 
