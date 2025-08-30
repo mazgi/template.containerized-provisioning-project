@@ -4,8 +4,8 @@ FROM ghcr.io/mazgi/provisioning
 # Set in non-interactive mode.
 ENV DEBIAN_FRONTEND=noninteractive
 
-# https://www.terraform.io/downloads.html
-ARG TERRAFORM_VERSIONS=1.2.8
+# https://developer.hashicorp.com/terraform/install
+ARG TERRAFORM_VERSIONS=1.13.0
 ENV TERRAFORM_VERSIONS=${TERRAFORM_VERSIONS}
 
 ARG DOCKER_GID
