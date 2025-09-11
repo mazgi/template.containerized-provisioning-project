@@ -2,7 +2,7 @@
 FROM ghcr.io/mazgi/provisioning
 
 # Set in non-interactive mode.
-ENV DEBIAN_FRONTEND=noninteractive
+ARG DEBIAN_FRONTEND=noninteractive
 
 # https://developer.hashicorp.com/terraform/install
 ARG TERRAFORM_VERSIONS=1.13.0
@@ -43,8 +43,3 @@ RUN :\
   && usermod --append --groups docker developer 2> /dev/null || true\
   && echo 'developer ALL=(ALL) NOPASSWD: ALL' > /etc/sudoers.d/grant-all-without-password-to-developer\
   && :
-
-# Reset DEBIAN_FRONTEND to default(`dialog`).
-# If you no need `dialog`, you can set `DEBIAN_FRONTEND=readline`.
-# see also: man 7 debconf
-ENV DEBIAN_FRONTEND=
